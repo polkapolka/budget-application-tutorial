@@ -17,6 +17,8 @@ This is a fork from a testing budget tutorial.
  is the one typically used in production. If you are having 
  trouble with it, then please [read this tutorial.](https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04)
  
+ Don't forget to `python manage.py makemigration` and `python manage.py migrate` after you assign a database user.
+ 
  
  
 ### Budget Application Testing Tutorial

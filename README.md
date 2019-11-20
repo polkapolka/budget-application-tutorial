@@ -44,11 +44,11 @@ There are three types of users.
    1. Can see budget
  
 
-### Master - **YOU ARE HERE**
+### Master
 
 This is a setup with no authentication.  This is to enable me to create clean branches.
 
-### default-django-auth 
+### default-django-auth - **YOU ARE HERE**
 
 This is a version created with default django User models.
 

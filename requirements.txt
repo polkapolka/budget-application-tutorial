@@ -1,3 +1,0 @@
-django
-selenium
-psycopg2

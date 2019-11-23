@@ -1,0 +1,97 @@
+{% extends 'budget/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <section class="section section-expenses">
+            <h1> Users</h1>
+            <hr>
+            {% if perms.auth.change_user %}
+                <div class="row">
+                    <button class="btn waves-effect right modal-trigger" href="#">
+                        <i class="material-icons white-text left">add_circle</i>
+                        Add Users
+                    </button>
+                </div>
+            {% endif %}
+            <ul class="z-depth-1">
+                {% for user_row in users_list %}
+                    <li>
+                        <div class="card-panel z-depth-0">
+                            <div class="row">
+
+                                <div class="col l6"><span class="title"> {{ user_row.email }}</span></div>
+                                <div class="col l3"><span class="title"> {{ user_row.groups.first }}</span></div>
+                                {% if perms.auth.change_user %}
+                                    <a class="close-icon" onclick="deleteUser(this)" data-id="{{ user_row.id }}">
+                                        <i class="material-icons red-text right">close</i>
+                                    </a>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+
+        <div id="userModal" class="modal">
+            <div class="modal-content">
+                <h4>Add User</h4>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <label for="email">Email</label>
+                    <input name="email" id="email">
+
+                    <label for="username">Username</label>
+                    <input name="username" id="username">
+
+                    <label for="first_name">First name</label>
+                    <input name="first_name" id="first_name">
+
+                    <label for="last_name">Last name</label>
+                    <input name="last_name" id="last_name">
+
+                    <select name="users">
+                        {% for group in group_list %}
+                            <option>{{ group.name }}</option>
+                        {% endfor %}
+                    </select>
+
+                    {% if perms.auth.change_users %}
+                        <button type="submit" class="btn">Add</button>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+        {% if perms.auth.delete_user %}
+            <script>
+                var elem = document.querySelector('.modal');
+                var instance = M.Modal.init(elem);
+
+                var elem = document.querySelector('select');
+                var instance = M.FormSelect.init(elem);
+
+
+                function deleteUser(e) {
+
+                    let id = e.dataset.id;
+                    e.closest('li').remove();
+
+                    fetch('', {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({
+                            'id': id
+                        }),
+                        credentials: 'same-origin',
+                    })
+                }
+            </script>
+        {% endif %}
+    </div>
+
+{% endblock content %}

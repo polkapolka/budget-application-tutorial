@@ -2,48 +2,63 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from .models import Project, Category, Expense
 from django.views.generic import CreateView
+from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.utils.text import slugify
+from django.shortcuts import redirect
+from django.contrib import messages
 from .forms import ExpenseForm
 import json
 
+
+@login_required
 def project_list(request):
     project_list = Project.objects.all()
     return render(request, 'budget/project-list.html', {'project_list': project_list})
 
+def user_can_see_detail(user):
+    return user.has_perm('budget.view_project')
+
+
+@login_required
 def project_detail(request, project_slug):
-    project = get_object_or_404(Project, slug=project_slug)
+    if request.user.has_perm('budget.view_project'):
+        project = get_object_or_404(Project, slug=project_slug)
+    
+        if request.method == 'GET':
+            category_list = Category.objects.filter(project=project)
+            return render(request, 'budget/project-detail.html', {'project': project, 'expense_list': project.expenses.all(), 'category_list': category_list})
+    
+        elif request.method == 'POST':
+            # process the form
+            form = ExpenseForm(request.POST)
+            if form.is_valid():
+                title = form.cleaned_data['title']
+                amount = form.cleaned_data['amount']
+                category_name = form.cleaned_data['category']
+    
+                category = get_object_or_404(Category, project=project, name=category_name)
+    
+                Expense.objects.create(
+                    project=project,
+                    title=title,
+                    amount=amount,
+                    category=category
+                ).save()
+    
+        elif request.method == 'DELETE':
+            try:
+                id = json.loads(request.body)['id']
+                expense = Expense.objects.get(id=id)
+                expense.delete()
+            except:
+                return HttpResponse(status=404)
+            return HttpResponse(status=204)
+    
+        return HttpResponseRedirect(project_slug)
+    else:
+        messages.add_message(request, messages.WARNING, 'You do not have permission to view projects.')
+        return redirect('list')
 
-    if request.method == 'GET':
-        category_list = Category.objects.filter(project=project)
-        return render(request, 'budget/project-detail.html', {'project': project, 'expense_list': project.expenses.all(), 'category_list': category_list})
-
-    elif request.method == 'POST':
-        # process the form
-        form = ExpenseForm(request.POST)
-        if form.is_valid():
-            title = form.cleaned_data['title']
-            amount = form.cleaned_data['amount']
-            category_name = form.cleaned_data['category']
-
-            category = get_object_or_404(Category, project=project, name=category_name)
-
-            Expense.objects.create(
-                project=project,
-                title=title,
-                amount=amount,
-                category=category
-            ).save()
-
-    elif request.method == 'DELETE':
-        try:
-            id = json.loads(request.body)['id']
-            expense = Expense.objects.get(id=id)
-            expense.delete()
-        except:
-            return HttpResponse(status=404)
-        return HttpResponse(status=204)
-
-    return HttpResponseRedirect(project_slug)
 
 
 class ProjectCreateView(CreateView):
@@ -66,3 +81,6 @@ class ProjectCreateView(CreateView):
 
     def get_success_url(self):
         return slugify(self.request.POST['name'])
+
+
+

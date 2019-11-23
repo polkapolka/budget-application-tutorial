@@ -1,0 +1,12 @@
+{% extends 'budget/base.html' %}
+{% load static %}
+<link href={% static 'css/signin.css' %} rel="stylesheet">
+{% block content %}
+    <h4>Goodbye</h4>
+    <h8>You have logged out</h8>
+    <div class="border-top pt-3">
+        <label class="text-muted">
+            <a  href="{% url 'home' %}">Sign In</a>
+        </label>
+    </div>
+{% endblock content %}

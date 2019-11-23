@@ -1,5 +1,6 @@
 {% extends 'budget/base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block content %}
     <div class="container">
         <section class="section section-expenses">
@@ -7,7 +8,7 @@
             <hr>
             {% if perms.auth.change_user %}
                 <div class="row">
-                    <button class="btn waves-effect right modal-trigger" href="#">
+                    <button class="btn waves-effect right modal-trigger" href="#userModal">
                         <i class="material-icons white-text left">add_circle</i>
                         Add Users
                     </button>
@@ -41,25 +42,14 @@
 
                 <form method="POST">
                     {% csrf_token %}
-                    <label for="email">Email</label>
-                    <input name="email" id="email">
-
-                    <label for="username">Username</label>
-                    <input name="username" id="username">
-
-                    <label for="first_name">First name</label>
-                    <input name="first_name" id="first_name">
-
-                    <label for="last_name">Last name</label>
-                    <input name="last_name" id="last_name">
-
-                    <select name="users">
-                        {% for group in group_list %}
+                    {{ form|crispy }}
+                    <select name="group">
+                        {% for group in groups_list %}
                             <option>{{ group.name }}</option>
                         {% endfor %}
                     </select>
 
-                    {% if perms.auth.change_users %}
+                    {% if perms.auth.change_user %}
                         <button type="submit" class="btn">Add</button>
                     {% endif %}
                 </form>

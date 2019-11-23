@@ -44,7 +44,7 @@ There are three types of users.
    1. Can see budget
  
 
-### Master - **YOU ARE HERE**
+### Master
 
 This is a setup with no authentication.  This is to enable me to create clean branches.
 
@@ -57,7 +57,7 @@ This is a version created with default django User models.
 
 This has a separate profile class in a one-to-one relationship with the django User model.
 
-### custom-abstractbaseuser model
+### custom-abstractbaseuser model - **YOU ARE HERE**
 
 This is an extension of the abstract base user class used to create a custom base user and base user manager.
 

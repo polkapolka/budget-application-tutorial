@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'users.BudgetUser'
 
 # Application definition
 
@@ -37,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'budget'
+    'budget',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -77,9 +79,9 @@ WSGI_APPLICATION = 'budgetproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'budgetproject',
-        'USER': 'budgetusermaster',
-        'PASSWORD': 'mastertestcase',
+        'NAME': 'budgetcustomproject',
+        'USER': 'budgetcustomusermaster',
+        'PASSWORD': 'customusertestcase',
         'HOST': 'localhost',
         'PORT': '',
     }

@@ -48,7 +48,7 @@ There are three types of users.
 
 This is a setup with no authentication.  This is to enable me to create clean branches.
 
-### default-django-auth - **YOU ARE HERE**
+### default-django-auth
 
 This is a version created with default django User models.
 
@@ -61,7 +61,7 @@ This has a separate profile class in a one-to-one relationship with the django U
 
 This is an extension of the abstract base user class used to create a custom base user and base user manager.
 
-### Okta Single Sign On
+### Okta Single Sign On - **YOU ARE HERE**
 
 This takes the default-django-auth and implements okta single sign on with it.
 

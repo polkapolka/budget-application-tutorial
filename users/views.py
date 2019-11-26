@@ -1,12 +1,17 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.urls import  reverse
+from django.shortcuts import render, redirect,render_to_response
+from django.urls import reverse
 from django.http import HttpResponse
+from django.conf import settings
 from django.contrib.auth.models import User, Group
 from .forms import UserRegisterForm
 import json
+import os
 
-def register(request):
+
+
+
+def registration(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -19,7 +24,8 @@ def register(request):
 
     else:
         form = UserRegisterForm()
-    return render(request,'users/register.html', {'form': form})
+    return render(request, 'users/register.html', {'form': form})
+
 
 def signin(request):
     return render(request, 'users/signin.html')
@@ -30,7 +36,8 @@ def manage_users(request):
         form = UserRegisterForm()
         groups_list = Group.objects.all()
         users_list = User.objects.filter(groups__name__in=['UserAdmin', 'Reader', 'ProjectManager']).distinct()
-        return render(request, 'users/users-list.html', {'users_list': users_list, 'form':form, 'groups_list': groups_list})
+        return render(request, 'users/users-list.html',
+                      {'users_list': users_list, 'form': form, 'groups_list': groups_list})
     elif request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():

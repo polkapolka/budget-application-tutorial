@@ -7,8 +7,9 @@ from users import views as user_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('budget.urls')),
-    path('register/', user_views.register, name='register'),
+    path('register/', user_views.registration, name='registration'),
     path('home/', auth_views.LoginView.as_view(template_name='users/signin.html'), name='home'),
     path('signout/', auth_views.LogoutView.as_view(template_name='users/signout.html'), name='signout'),
-    path('users/', user_views.manage_users , name='users-list')
+    path('users/', user_views.manage_users , name='users-list'),
+    path('openid/', include('oidc_provider.urls', namespace='oidc_provider')),
 ]

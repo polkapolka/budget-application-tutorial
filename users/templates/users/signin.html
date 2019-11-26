@@ -9,29 +9,37 @@
 {% extends 'budget/base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
-<link href={% static 'css/signin.css' %} rel="stylesheet">
+
+
+
 {% block content %}
 
-    <form class="form-signin" method="POST">
-    {% csrf_token %}
-        <img class="mb-4" width="72" height="72" src={% static 'img/favicon.png' %}>
-        <h1 class="h3 mb-3 font-weight-normal">Please Sign In</h1>
-        {{ form|crispy }}
-        {#  <label for="inputEmail" class="sr-only">Email address</label>#}
-        {#  <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>#}
-        {#  <label for="inputPassword" class="sr-only">Password</label>#}
-        {#  <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>#}
-        <div class="checkbox custom-checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        <p class="mt-5 mb-3 text-muted">&copy;</p>
-    </form>
-    <div class="border-top pt-3">
-        <small class="text-muted">
-            Need An Account? <a class="ml-2" href="{% url 'register' %}">Sign Up Now</a>
-        </small>
-    </div>
+        {% csrf_token %}
+
+        <div id="sign-in-widget"></div>
+
+
+<script type="text/javascript">
+  new OktaSignIn({
+    baseUrl: 'https://nocimedhealth.okta.com',
+    clientId: '0oa1xz7eoh9AIk69a357',
+    redirectUri: "http://localhost:8080/authorization-code/callback",
+    logo: "{% static 'img/favicon.png' %}",
+    authParams: {
+      issuer: "https://nocimedhealth.okta.com/oauth2/default",
+      responseType: 'code',
+      state: {
+          'csrf_token': '{% csrf_token %}',
+          'destination':"http://localhost:8080/"
+
+      },
+      display: 'page',
+      scopes: ['openid', 'profile', 'email']
+    }
+  }).renderEl(
+    { el: '#sign-in-widget' },
+    function (res) {}
+  );
+</script>
+
 {% endblock %}

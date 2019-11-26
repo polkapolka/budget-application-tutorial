@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'budget',
     'users',
     'crispy_forms',
+    'oidc_provider',
 ]
 
 MIDDLEWARE = [
@@ -131,3 +132,9 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = '/'
 
 LOGIN_URL = 'home'
+
+# from dotenv import load_dotenv, find_dotenv
+# load_dotenv(find_dotenv())
+
+YOUR_ORG_URL='https://nocimedhealth.okta.com'
+YOUR_APP_CLIENT_ID = '0oa1xz7eoh9AIk69a357'

@@ -23,14 +23,14 @@
   new OktaSignIn({
     baseUrl: 'https://nocimedhealth.okta.com',
     clientId: '0oa1xz7eoh9AIk69a357',
-    redirectUri: "http://localhost:8080/authorization-code/callback",
+    redirectUri: "http://localhost:8000/",
     logo: "{% static 'img/favicon.png' %}",
     authParams: {
       issuer: "https://nocimedhealth.okta.com/oauth2/default",
       responseType: 'code',
       state: {
           'csrf_token': '{% csrf_token %}',
-          'destination':"http://localhost:8080/"
+          'destination':"http://localhost:8000/"
 
       },
       display: 'page',

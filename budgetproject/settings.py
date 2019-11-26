@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'budget',
     'users',
     'crispy_forms',
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -138,3 +140,14 @@ LOGIN_URL = 'home'
 
 YOUR_ORG_URL='https://nocimedhealth.okta.com'
 YOUR_APP_CLIENT_ID = '0oa1xz7eoh9AIk69a357'
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:8000',
+    'https://nocimedhealth.okta.com'
+]
+CORS_ORIGIN_REGEX_WHITELIST = [
+    'http://localhost:8000',
+    'https://nocimedhealth.okta.com',
+]
